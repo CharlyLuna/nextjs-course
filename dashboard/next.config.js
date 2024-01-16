@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "album.mediaset.es",
       },
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
+      },
     ],
   },
 }

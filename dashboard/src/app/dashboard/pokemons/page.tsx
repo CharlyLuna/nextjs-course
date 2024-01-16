@@ -1,4 +1,9 @@
-import { PokemonGrid, PokemonsReponse, SimplePokemon } from "@/app/pokemons"
+import { PokemonGrid, PokemonsReponse, SimplePokemon } from "@/pokemons"
+
+export const metadata = {
+  title: "Pokemons List",
+  description: "A static pokemons list",
+}
 
 const getPokemons = async (
   limit = 20,
