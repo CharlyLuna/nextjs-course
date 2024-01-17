@@ -1,5 +1,7 @@
+export const revalidate = 86400
 import { Pokemon } from "@/pokemons"
 import { getPokemons } from "@/pokemons/helpers/retrievePokemons"
+import axios from "axios"
 import { Metadata } from "next"
 import Image from "next/image"
 import { notFound } from "next/navigation"
@@ -31,14 +33,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const getPokemon = async (name: string): Promise<Pokemon> => {
   try {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`, {
-      next: {
-        revalidate: 60 * 60 * 24,
-      },
-    })
-    const pokemon = await res.json()
-
-    return pokemon
+    const { data } = await axios.get(
+      `https://pokeapi.co/api/v2/pokemon/${name}`
+    )
+    // const pokemon = await res.json()
+    return data
   } catch (e) {
     return notFound()
   }
