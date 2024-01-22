@@ -2,6 +2,7 @@ import Image from "next/image"
 import {
   IoBrowsersOutline,
   IoCalculator,
+  IoHeart,
   IoList,
   IoLogoReact,
 } from "react-icons/io5"
@@ -25,6 +26,12 @@ const menuItems = [
     icon: <IoList size={30} />,
     title: "Pokemons",
     subtitle: "Static generation of pokemons",
+  },
+  {
+    path: "/dashboard/favorites",
+    icon: <IoHeart size={30} />,
+    title: "Favorites",
+    subtitle: "List of your favorite pokemons",
   },
 ]
 
