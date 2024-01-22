@@ -6,10 +6,20 @@ import {
   initCounter,
   reset,
 } from "@/store/counter/counterSlice"
+import axios from "axios"
 import { useEffect } from "react"
 
 interface Props {
   value?: number
+}
+
+export interface CounterResponse {
+  count: number
+}
+
+const getApiCounter = async (): Promise<CounterResponse> => {
+  const { data } = await axios.get("/api/counter")
+  return data
 }
 
 export const CartCounter = ({ value = 0 }: Props) => {
@@ -17,8 +27,8 @@ export const CartCounter = ({ value = 0 }: Props) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(initCounter(value))
-  }, [dispatch, value])
+    getApiCounter().then(({ count }) => dispatch(initCounter(count)))
+  }, [dispatch])
 
   return (
     <>
