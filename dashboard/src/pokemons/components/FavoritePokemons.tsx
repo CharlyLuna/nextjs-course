@@ -1,13 +1,18 @@
 "use client"
-import { useAppSelector } from "@/store"
+import { RootState, useAppSelector } from "@/store"
 import { IoHeartOutline } from "react-icons/io5"
 import { PokemonGrid } from "./PokemonGrid"
+import { createSelector } from "@reduxjs/toolkit"
 import { useEffect, useState } from "react"
+import { SimplePokemon } from ".."
 
+// const selectFavorites = (state: RootState) => state.pokemons.favorites
+const favoritesSelector = createSelector(
+  [(state: RootState) => state.pokemons.favorites],
+  (favorites) => Object.values(favorites)
+)
 export const FavoritePokemons = () => {
-  const favoritePokemons = useAppSelector((state) =>
-    Object.values(state.pokemons.favorites)
-  )
+  const favoritePokemons = useAppSelector(favoritesSelector)
   // const [pokemons, setPokemons] = useState(favoritePokemons)
 
   return (
