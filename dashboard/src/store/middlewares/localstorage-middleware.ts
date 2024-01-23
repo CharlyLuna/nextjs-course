@@ -7,7 +7,11 @@ export const localStorageMiddleware = (state: MiddlewareAPI) => {
 
     if (action.type === "pokemons/toggleFavorite") {
       const { pokemons } = state.getState() as RootState
-      localStorage.setItem("favoritePokemons", JSON.stringify(pokemons))
+      // console.log(pokemons)
+      localStorage.setItem(
+        "favoritePokemons",
+        JSON.stringify(pokemons.favorites)
+      )
       return
     }
   }
