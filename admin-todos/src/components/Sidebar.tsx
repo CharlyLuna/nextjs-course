@@ -1,6 +1,12 @@
 import Image from "next/image"
 import Link from "next/link"
-import { CiBookmarkCheck, CiBoxList, CiLogout } from "react-icons/ci"
+import {
+  CiBookmarkCheck,
+  CiBoxList,
+  CiCircleChevRight,
+  CiLogout,
+  CiSquareRemove,
+} from "react-icons/ci"
 import { SidebarItem } from "./SidebarItem"
 
 const routes = [
@@ -18,6 +24,11 @@ const routes = [
     title: "Server actions",
     route: "/dashboard/server-actions",
     icon: <CiBoxList size={30} />,
+  },
+  {
+    title: "Cookies",
+    route: "/dashboard/cookies",
+    icon: <CiCircleChevRight size={30} />,
   },
 ]
 
