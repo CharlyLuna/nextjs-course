@@ -7,17 +7,19 @@ import {
   CiShoppingBasket,
 } from "react-icons/ci"
 
+const getTotalItems = (cart: { [key: string]: number }): number => {
+  let total = 0
+  for (let item in cart) {
+    total += cart[item]
+  }
+  return total
+}
+
 export const TopMenu = () => {
   const cookieStore = cookies()
   const cart = JSON.parse(cookieStore.get("cart")?.value ?? "{}")
 
-  const getTotalItems = () => {
-    let total = 0
-    for (let item in cart) {
-      total += cart[item]
-    }
-    return total
-  }
+  const totalItems = getTotalItems(cart)
 
   return (
     <div className='sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5'>
@@ -51,9 +53,11 @@ export const TopMenu = () => {
             <CiChat1 size={25} />
           </button>
           <button className='flex items-center justify-center p-2 gap-1 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200'>
-            <span className='text-sm text-blue-600 font-bold'>
-              {getTotalItems()}
-            </span>
+            {totalItems > 0 && (
+              <span className='text-sm text-blue-600 font-bold'>
+                {totalItems}
+              </span>
+            )}
             <CiShoppingBasket size={25} />
           </button>
         </div>

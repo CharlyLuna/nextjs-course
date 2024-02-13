@@ -2,7 +2,10 @@
 import Image from "next/image"
 import { IoAddCircleOutline, IoTrashOutline } from "react-icons/io5"
 import { Star } from "./Star"
-import { addProductToCart } from "@/shopping-cart/actions/actions"
+import {
+  addProductToCart,
+  removeProductFromCart,
+} from "@/shopping-cart/actions/actions"
 import { useRouter } from "next/navigation"
 
 interface Props {
@@ -17,6 +20,11 @@ export const ProductCard = ({ id, image, name, price, rating }: Props) => {
   const router = useRouter()
   const onAddToCart = () => {
     addProductToCart(id)
+    router.refresh()
+  }
+
+  const onRemoveFromCart = () => {
+    removeProductFromCart(id)
     router.refresh()
   }
 
@@ -55,7 +63,7 @@ export const ProductCard = ({ id, image, name, price, rating }: Props) => {
         {/* Price and Add to Cart */}
         <div className='flex items-center justify-between'>
           <span className='md:text-xl text-3xl font-bold  text-white'>
-            $599
+            {price.toFixed(2)}
           </span>
 
           <div className='flex gap-2'>
@@ -65,7 +73,10 @@ export const ProductCard = ({ id, image, name, price, rating }: Props) => {
             >
               <IoAddCircleOutline size={25} />
             </button>
-            <button className='text-white focus:ring-4 font-medium rounded-lg text-sm px-4 py-2 text-center bg-red-600 hover:bg-red-700 focus:ring-red-800'>
+            <button
+              onClick={onRemoveFromCart}
+              className='text-white focus:ring-4 font-medium rounded-lg text-sm px-4 py-2 text-center bg-red-600 hover:bg-red-700 focus:ring-red-800'
+            >
               <IoTrashOutline size={20} />
             </button>
           </div>
