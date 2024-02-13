@@ -5,7 +5,7 @@ import {
   CiBoxList,
   CiCircleChevRight,
   CiLogout,
-  CiSquareRemove,
+  CiShoppingCart,
 } from "react-icons/ci"
 import { SidebarItem } from "./SidebarItem"
 
@@ -29,6 +29,11 @@ const routes = [
     title: "Cookies",
     route: "/dashboard/cookies",
     icon: <CiCircleChevRight size={30} />,
+  },
+  {
+    title: "Products",
+    route: "/dashboard/products",
+    icon: <CiShoppingCart size={30} />,
   },
 ]
 
