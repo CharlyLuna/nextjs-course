@@ -1,6 +1,6 @@
 import { getCookie, hasCookie, setCookie } from "cookies-next"
 
-interface CartItem {
+export interface CartItem {
   [key: string]: number
 }
 
@@ -31,9 +31,11 @@ export const removeProductFromCart = (id: string) => {
   setCookie("cart", JSON.stringify(cookieCart))
 }
 
-// export const reduceCountOfProductFromCart = (id: string) => {
-//   const cookieCart = getCookieCart()
-//   cookieCart[id] -= 1
+export const removeSingleItemFromCart = (id: string) => {
+  const cookieCart = getCookieCart()
+  if (!cookieCart[id]) return
+  cookieCart[id] -= 1
+  if (cookieCart[id] <= 0) delete cookieCart[id]
 
-//   setCookie("cart", JSON.stringify(cookieCart))
-// }
+  setCookie("cart", JSON.stringify(cookieCart))
+}
