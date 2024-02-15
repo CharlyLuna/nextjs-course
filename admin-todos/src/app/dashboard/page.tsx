@@ -5,6 +5,9 @@ import { redirect } from "next/navigation"
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions)
+  if (!session) {
+    redirect("/api/auth/signin")
+  }
 
   return (
     <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
