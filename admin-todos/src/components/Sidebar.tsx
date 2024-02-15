@@ -6,8 +6,11 @@ import {
   CiCircleChevRight,
   CiLogout,
   CiShoppingCart,
+  CiUser,
 } from "react-icons/ci"
 import { SidebarItem } from "./SidebarItem"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 
 const routes = [
   {
@@ -35,9 +38,16 @@ const routes = [
     route: "/dashboard/products",
     icon: <CiShoppingCart size={30} />,
   },
+  {
+    title: "Profile",
+    route: "/dashboard/profile",
+    icon: <CiUser size={30} />,
+  },
 ]
 
-export const Sidebar = () => {
+export const Sidebar = async () => {
+  const session = await getServerSession(authOptions)
+
   return (
     <aside className='ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]'>
       <div>
@@ -50,7 +60,7 @@ export const Sidebar = () => {
             <Image
               src='https://cdn.freelogovectors.net/wp-content/uploads/2023/01/attackontitanlogo-freelogovectors.net_.png'
               className='w-28'
-              alt='tailus logo'
+              alt='user profile picture'
               width={100}
               height={100}
             />
@@ -59,14 +69,17 @@ export const Sidebar = () => {
 
         <div className='mt-8 text-center'>
           <Image
-            src='https://www.fayerwayer.com/resizer/LQ33NDw_2HWANqCaSp4pzM7j8As=/800x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/metroworldnews/NKVIBDXH7FESTGR2FZJNHFSUUQ.jpg'
+            src={
+              session?.user?.image ??
+              "https://www.fayerwayer.com/resizer/LQ33NDw_2HWANqCaSp4pzM7j8As=/800x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/metroworldnews/NKVIBDXH7FESTGR2FZJNHFSUUQ.jpg"
+            }
             alt=''
             className='w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28'
             width={150}
             height={150}
           />
           <h5 className='hidden mt-4 text-xl font-semibold text-gray-600 lg:block'>
-            Mikasa Ackerman
+            {session?.user?.name ?? "Mikasa Ackerman"}
           </h5>
           <span className='hidden text-gray-400 lg:block'>Admin</span>
         </div>
