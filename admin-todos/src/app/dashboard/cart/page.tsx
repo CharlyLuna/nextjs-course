@@ -54,7 +54,7 @@ export default function CartPage() {
               </h3>
             </div>
             <span className='font-bold text-center text-gray-600'>
-              Impuestos 15%: ${(totalPrice * 0.15).toFixed(2)}
+              Taxes 15%: ${(totalPrice * 0.15).toFixed(2)}
             </span>
           </WidgetItem>
         </div>

@@ -1,6 +1,6 @@
 interface Props {
   title: string
-  children: React.ReactNode
+  children?: React.ReactNode
   subtitle?: string
 }
 
