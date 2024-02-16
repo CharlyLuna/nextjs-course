@@ -10,11 +10,13 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
+    <div className='grid gap-6 grid-cols-1 '>
       <WidgetItem title='User connected - server side'>
         <div className='flex flex-col justify-center items-center'>
           <h1>{session?.user?.name ?? ""}</h1>
           <span>{session?.user?.email ?? ""}</span>
+          <span>{session?.user?.id ?? ""}</span>
+          <span>{session?.user?.roles!.join()}</span>
         </div>
       </WidgetItem>
     </div>
