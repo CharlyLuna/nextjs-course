@@ -4,7 +4,7 @@ import { IoCartOutline, IoSearchOutline } from "react-icons/io5"
 
 export const TopMenu = () => {
   return (
-    <nav className='flex px-5 justify-between items-center w-full'>
+    <nav className='fixed top-0 flex px-5 justify-between items-center w-full'>
       <div>
         <Link href='/'>
           <span className={`${titleFont.className} antialiased font-bold`}>
