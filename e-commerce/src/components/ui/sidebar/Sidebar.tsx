@@ -10,6 +10,8 @@ import {
   IoShirtOutline,
   IoTicketOutline,
 } from "react-icons/io5"
+import { useUIStore } from "@/store"
+import clsx from "clsx"
 
 const userOptions = [
   { title: "Profile", icon: <IoPersonOutline size={30} /> },
@@ -24,14 +26,29 @@ const adminOptions = [
 ]
 
 export const Sidebar = () => {
+  const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen)
+  const closeMenu = useUIStore((state) => state.closeSideMenu)
+
   return (
     <div className=''>
-      <div className='fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30' />
-      <div className='fixed fade-in top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm' />
+      {isSideMenuOpen && (
+        <>
+          <div className='fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30' />
+          <div
+            onClick={() => closeMenu()}
+            className='fixed fade-in top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm'
+          />
+        </>
+      )}
 
       {/* Side menu */}
-      <nav className='overflow-auto fixed p-5 right-0 top-0 w-screen md:w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300'>
-        <button onClick={() => {}}>
+      <nav
+        className={clsx(
+          "overflow-auto fixed p-5 right-0 top-0 w-screen md:w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
+          { "translate-x-full": !isSideMenuOpen }
+        )}
+      >
+        <button onClick={() => closeMenu()}>
           <IoCloseOutline className='absolute top-5 right-5' size={50} />
         </button>
 
@@ -52,7 +69,9 @@ export const Sidebar = () => {
             </Link>
           ))}
         </ul>
+
         <div className='my-5 w-full h-px bg-gray-200'></div>
+
         <ul className='flex flex-col gap-4'>
           {adminOptions.map((option) => (
             <Link key={option.title} href='/' className='menu-options'>
