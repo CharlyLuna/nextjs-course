@@ -1,4 +1,4 @@
-import { TopMenu } from "@/components"
+import { Sidebar, TopMenu } from "@/components"
 
 export default function ShopLayout({
   children,
@@ -8,6 +8,7 @@ export default function ShopLayout({
   return (
     <>
       <TopMenu />
+      <Sidebar />
       <main className='h-screen pt-14'>
         <div className='px-2 sm:px-5 h-full overflow-auto'>{children}</div>
       </main>
