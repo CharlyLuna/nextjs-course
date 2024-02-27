@@ -8,7 +8,9 @@ export default function ShopLayout({
   return (
     <>
       <TopMenu />
-      <main className='h-screen'>{children}</main>
+      <main className='h-screen pt-14'>
+        <div className='px-2 sm:px-5 h-full overflow-auto'>{children}</div>
+      </main>
     </>
   )
 }
