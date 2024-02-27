@@ -10,8 +10,8 @@ import {
 } from "react-icons/ci"
 import { SidebarItem } from "./SidebarItem"
 import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import { LogoutButton } from "@/components"
+import { authOptions } from "@/auth/utils/authOptions"
 
 const routes = [
   {
