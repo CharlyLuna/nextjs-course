@@ -10,7 +10,7 @@ import "swiper/css/thumbs"
 
 import "./slideshow.css"
 
-import { FreeMode, Navigation, Thumbs } from "swiper/modules"
+import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules"
 import Image from "next/image"
 
 interface Props {
@@ -27,14 +27,15 @@ export const Slideshow = ({ images, title, className }: Props) => {
       <Swiper
         style={
           {
-            "--swiper-navigation-color": "#fff",
-            "--swiper-pagination-color": "#fff",
+            "--swiper-navigation-color": "black",
+            "--swiper-pagination-color": "black",
           } as React.CSSProperties
         }
         spaceBetween={10}
         navigation={true}
+        autoplay={{ delay: 3000 }}
         thumbs={{ swiper: thumbsSwiper }}
-        modules={[FreeMode, Navigation, Thumbs]}
+        modules={[FreeMode, Navigation, Thumbs, Autoplay]}
         className='mySwiper2'
       >
         {images.map((image) => (
@@ -42,8 +43,31 @@ export const Slideshow = ({ images, title, className }: Props) => {
             <Image
               src={`/products/${image}`}
               alt={title}
-              height={980}
+              height={800}
               width={1024}
+              className='rounded-lg object-fill'
+              priority
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      <Swiper
+        onSwiper={setThumbsSwiper}
+        spaceBetween={10}
+        slidesPerView={4}
+        freeMode={true}
+        watchSlidesProgress={true}
+        modules={[FreeMode, Navigation, Thumbs]}
+        className='mySwiper'
+      >
+        {images.map((image) => (
+          <SwiperSlide key={image}>
+            <Image
+              src={`/products/${image}`}
+              alt={title}
+              height={300}
+              width={300}
+              className='rounded-lg object-fill'
             />
           </SwiperSlide>
         ))}

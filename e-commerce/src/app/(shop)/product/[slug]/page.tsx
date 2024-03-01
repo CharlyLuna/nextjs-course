@@ -19,11 +19,11 @@ export default function ProductPage({ params }: Props) {
 
   return (
     <div className='mt-5 mb-20 grid grid-cols-1 lg:grid-cols-3 gap-3'>
-      <div className='col-span-1 lg:col-span-2 bg-red-200'>
+      <div className='col-span-1 lg:col-span-2 '>
         <Slideshow title={product.title} images={product.images} />
       </div>
 
-      <div className='px-5 bg-blue-200'>
+      <div className='grid-cols-1 px-5 '>
         <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
           {product.title}
         </h1>
