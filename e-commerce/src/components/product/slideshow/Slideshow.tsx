@@ -23,14 +23,8 @@ export const Slideshow = ({ images, title, className }: Props) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperObject>()
 
   return (
-    <div className=''>
+    <div className={className}>
       <Swiper
-        style={
-          {
-            "--swiper-navigation-color": "black",
-            "--swiper-pagination-color": "black",
-          } as React.CSSProperties
-        }
         spaceBetween={10}
         navigation={true}
         autoplay={{ delay: 3000 }}
