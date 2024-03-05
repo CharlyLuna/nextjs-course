@@ -25,9 +25,9 @@ export default function CategoryPage({ params }: Props) {
   // if (!allowedRoutes.includes(id)) return notFound()
 
   return (
-    <>
+    <div className='px-4 md:px-0'>
       <Title title={labels[id]} subtitle='All products' />
       <ProductsGrid products={products} />
-    </>
+    </div>
   )
 }
