@@ -5,41 +5,41 @@ export default function AddressPage() {
   return (
     <div className='flex flex-col sm:justify-center sm:items-center mb-72 px-4 md:px-0'>
       <div className='w-full  xl:w-[1000px] flex flex-col justify-center text-left'>
-        <Title title='Dirección' subtitle='Dirección de entrega' />
+        <Title title='Address' subtitle='Delivery address' />
 
         <div className='grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2 bg-white rounded-xl shadow-xl p-7'>
           <div className='flex flex-col mb-2'>
-            <span>Nombres</span>
+            <span>Name</span>
             <input type='text' className='p-2 border rounded-md bg-gray-200' />
           </div>
 
           <div className='flex flex-col mb-2'>
-            <span>Apellidos</span>
+            <span>Last name</span>
             <input type='text' className='p-2 border rounded-md bg-gray-200' />
           </div>
 
           <div className='flex flex-col mb-2'>
-            <span>Dirección</span>
+            <span>Address</span>
             <input type='text' className='p-2 border rounded-md bg-gray-200' />
           </div>
 
           <div className='flex flex-col mb-2'>
-            <span>Dirección 2 (opcional)</span>
+            <span>Second address (opcional)</span>
             <input type='text' className='p-2 border rounded-md bg-gray-200' />
           </div>
 
           <div className='flex flex-col mb-2'>
-            <span>Código postal</span>
+            <span>CP</span>
             <input type='text' className='p-2 border rounded-md bg-gray-200' />
           </div>
 
           <div className='flex flex-col mb-2'>
-            <span>Ciudad</span>
+            <span>City</span>
             <input type='text' className='p-2 border rounded-md bg-gray-200' />
           </div>
 
           <div className='flex flex-col mb-2'>
-            <span>País</span>
+            <span>Country</span>
             <select className='p-2 border rounded-md bg-gray-200'>
               <option value=''>[ Seleccione ]</option>
               <option value='CRI'>Costa Rica</option>
@@ -47,7 +47,7 @@ export default function AddressPage() {
           </div>
 
           <div className='flex flex-col mb-2'>
-            <span>Teléfono</span>
+            <span>Phone</span>
             <input type='text' className='p-2 border rounded-md bg-gray-200' />
           </div>
 
@@ -56,7 +56,7 @@ export default function AddressPage() {
               href='/checkout'
               className='btn-primary flex w-full sm:w-1/2 justify-center '
             >
-              Siguiente
+              Next
             </Link>
           </div>
         </div>
