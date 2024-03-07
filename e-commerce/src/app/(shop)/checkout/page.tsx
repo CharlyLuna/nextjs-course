@@ -41,7 +41,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Checkout */}
-          <div className='bg-white rounded-xl shadow-xl p-7'>
+          <div className='bg-white rounded-xl shadow-xl p-7 h-fit'>
             <h2 className='text-2xl mb-2'>Delivery address</h2>
             <div>
               <p>John Doe</p>
