@@ -8,6 +8,7 @@ E-commerce app using tailwindcss, Nextjs, TypeScript
 2. Create a copy of the `.env.template` and rename it to `.env` and change the enviroment variables
 3. Install dependencies `npm install`
 4. Lift the database with `docker compose up -d`
-5. Run the project `npm run dev`
+5. Run the prisma migrations `npx prisma migrate dev`
+6. Run the project `npm run dev`
 
 ## Run in prod
