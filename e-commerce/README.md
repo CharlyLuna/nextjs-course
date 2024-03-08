@@ -9,6 +9,7 @@ E-commerce app using tailwindcss, Nextjs, TypeScript
 3. Install dependencies `npm install`
 4. Lift the database with `docker compose up -d`
 5. Run the prisma migrations `npx prisma migrate dev`
-6. Run the project `npm run dev`
+6. Execute seed `npm run seed`
+7. Run the project `npm run dev`
 
 ## Run in prod
