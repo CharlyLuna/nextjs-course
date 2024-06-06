@@ -2,6 +2,7 @@ export const revalidate = 60
 import { getProductPaginationWithImages } from "@/actions"
 import { Pagination, ProductsGrid, Title } from "@/components"
 import { Gender } from "@prisma/client"
+import { Metadata, ResolvingMetadata } from "next"
 import { redirect } from "next/navigation"
 
 interface Props {
@@ -10,6 +11,23 @@ interface Props {
   }
   searchParams: {
     page?: string
+  }
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const gender = params.gender
+
+  return {
+    title: `${gender} products`,
+    description: `${gender} products list`,
+    openGraph: {
+      title: `${gender} products`,
+      description: `${gender} products page`,
+    },
   }
 }
 

@@ -8,11 +8,33 @@ import {
 } from "@/components"
 import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector"
 import { titleFont } from "@/config/fonts"
+import { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
 
 interface Props {
   params: {
     slug: string
+  }
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const slug = params.slug
+
+  // fetch data
+  const product = await getProductBySlug(slug)
+
+  return {
+    title: product?.title ?? "product not found",
+    description: product?.description ?? "",
+    openGraph: {
+      title: product?.title ?? "product not found",
+      description: product?.description ?? "",
+      images: [`/products/${product?.images[1]}`],
+    },
   }
 }
 
