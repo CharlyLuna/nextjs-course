@@ -1,3 +1,4 @@
+export const revalidate = 60
 import { getProductPaginationWithImages } from "@/actions"
 import { ProductsGrid, Title, Pagination } from "@/components"
 import { redirect } from "next/navigation"
