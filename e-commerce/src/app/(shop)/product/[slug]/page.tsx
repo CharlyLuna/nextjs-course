@@ -1,20 +1,24 @@
-import { MobileSlideShow, SizeSelector, Slideshow } from "@/components"
+export const revalidate = 3600
+import { getProductBySlug } from "@/actions"
+import {
+  MobileSlideShow,
+  SizeSelector,
+  Slideshow,
+  StockLabel,
+} from "@/components"
 import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector"
 import { titleFont } from "@/config/fonts"
-import { initialData } from "@/seed/seed"
 import { notFound } from "next/navigation"
 
-const seedProducts = initialData.products
 interface Props {
   params: {
     slug: string
   }
 }
 
-export default function ProductPage({ params }: Props) {
+export default async function ProductPage({ params }: Props) {
   const { slug } = params
-  const product = seedProducts.find((product) => product.slug === slug)
-
+  const product = await getProductBySlug(slug)
   if (!product) return notFound()
 
   return (
@@ -35,6 +39,7 @@ export default function ProductPage({ params }: Props) {
       </div>
 
       <div className='grid-cols-1 px-5 '>
+        <StockLabel slug={slug} />
         <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
           {product.title}
         </h1>
