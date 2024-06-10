@@ -1,14 +1,16 @@
 "use client"
 
 import { useState } from "react"
+import { useCartStore } from "@/store"
 import { QuantitySelector, SizeSelector } from "@/components"
-import type { Product, ValidSize } from "@/interfaces"
+import type { CartProduct, Product, ValidSize } from "@/interfaces"
 
 interface Props {
   product: Product
 }
 
 export const AddToCart = ({ product }: Props) => {
+  const addProductToCart = useCartStore((state) => state.AddProductToCart)
   const [size, setSize] = useState<ValidSize | undefined>()
   const [quantity, setQuantity] = useState<number>(1)
   const [error, setError] = useState<string>()
@@ -16,7 +18,19 @@ export const AddToCart = ({ product }: Props) => {
   const addToCart = () => {
     setError(undefined)
     if (!size) return setError("Please select a size")
-    console.log("Adding to cart", { size, quantity })
+
+    const cartProduct: CartProduct = {
+      id: product.id,
+      slug: product.slug,
+      title: product.title,
+      price: product.price,
+      quantity: quantity,
+      size: size,
+      image: product.images[0],
+    }
+    addProductToCart(cartProduct)
+    setSize(undefined)
+    setQuantity(1)
   }
 
   return (
