@@ -2,6 +2,7 @@
 import { useCartStore } from "@/store"
 import { useEffect, useState } from "react"
 import { currencyFormat } from "../../../../utils/currencyFormat"
+import { redirect } from "next/navigation"
 
 export const OrderSummary = () => {
   const [loaded, setLoaded] = useState(false)
@@ -12,6 +13,10 @@ export const OrderSummary = () => {
   useEffect(() => {
     setLoaded(true)
   }, [])
+
+  useEffect(() => {
+    if (itemsInCart === 0 && loaded) redirect("/empty")
+  }, [loaded, itemsInCart])
 
   if (!loaded) {
     return (

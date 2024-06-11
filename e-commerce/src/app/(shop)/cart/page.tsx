@@ -1,5 +1,4 @@
 import { Title } from "@/components"
-import { initialData } from "@/seed/seed"
 import Link from "next/link"
 import { ProductsInCart } from "./ui/ProductsInCart"
 import { OrderSummary } from "./ui/OrderSummary"
