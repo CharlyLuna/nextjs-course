@@ -1,14 +1,7 @@
 import { Title } from "@/components"
-import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector"
 import { initialData } from "@/seed/seed"
-import Image from "next/image"
 import Link from "next/link"
-
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-]
+import { ProductsInCart } from "./ui/ProductsInCart"
 
 export default function CartPage() {
   return (
@@ -22,23 +15,7 @@ export default function CartPage() {
             <Link href='/' className='underline'>
               Continue shopping
             </Link>
-            {productsInCart.map((product) => (
-              <div key={product.slug} className='flex gap-2 my-4'>
-                <Image
-                  src={`/products/${product.images[0]}`}
-                  alt={product.title}
-                  width={100}
-                  height={100}
-                  className='rounded-md w-auto object-cover'
-                />
-                <div>
-                  <p className='text-sm font-semibold'>{product.title}</p>
-                  <p>${product.price}</p>
-                  <QuantitySelector quantity={2} />
-                  <button className='underline'>Remove</button>
-                </div>
-              </div>
-            ))}
+            <ProductsInCart />
           </div>
 
           {/* Checkout */}

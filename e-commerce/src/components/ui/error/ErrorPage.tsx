@@ -10,11 +10,11 @@ export const ErrorPage = ({
   reset: () => void
 }) => {
   return (
-    <div className='flex flex-col-reverse h-full md:flex-row w-full justify-center items-center align-middle'>
+    <div className='flex flex-col-reverse h-screen md:flex-row w-full justify-center items-center align-middle'>
       <div className='text-center px-5 mx-5'>
         <h2 className={`${titleFont.className} text-7xl`}>500</h2>
         <p className='font-semibold text-xl'>
-          Whoops! We are sorry, somegthing went wrong.
+          Whoops! We are sorry, something went wrong.
         </p>
         <p className='font-light'>
           <span>Go back to </span>
