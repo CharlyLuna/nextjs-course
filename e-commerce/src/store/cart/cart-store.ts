@@ -7,7 +7,7 @@ interface State {
   getTotalItems: () => number
   AddProductToCart: (product: CartProduct) => void
   updateProductQuantity: (product: CartProduct, quantity: number) => void
-  // removeProductFromCart
+  removeProductFromCart: (product: CartProduct) => void
 }
 
 export const useCartStore = create<State>()(
@@ -46,6 +46,14 @@ export const useCartStore = create<State>()(
           item.id === product.id && item.size === product.size
             ? { ...item, quantity: quantity }
             : item
+        )
+
+        set({ cart: updatedCart })
+      },
+      removeProductFromCart: (product: CartProduct) => {
+        const { cart } = get()
+        const updatedCart = cart.filter(
+          (item) => item.id !== product.id || item.size !== product.size
         )
 
         set({ cart: updatedCart })
