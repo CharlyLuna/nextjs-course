@@ -22,8 +22,8 @@ export const ProductsInCart = () => {
   if (!loaded) {
     return (
       <>
-        <div className='h-[130px] w-[350px] animate-pulse bg-gray-400 my-4 rounded-md'></div>
-        <div className='h-[130px] w-[350px] animate-pulse bg-gray-400 my-4 rounded-md'></div>
+        <div className='h-[130px] w-[350px] animate-pulse bg-gray-200 my-4 rounded-md'></div>
+        <div className='h-[130px] w-[350px] animate-pulse bg-gray-200 my-4 rounded-md'></div>
       </>
     )
   }
