@@ -14,15 +14,15 @@ import { useUIStore } from "@/store"
 import clsx from "clsx"
 
 const userOptions = [
-  { title: "Profile", icon: <IoPersonOutline size={30} /> },
-  { title: "Orders", icon: <IoTicketOutline size={30} /> },
-  { title: "Log In", icon: <IoLogInOutline size={30} /> },
-  { title: "Log Out", icon: <IoLogOutOutline size={30} /> },
+  { title: "Profile", icon: <IoPersonOutline size={30} />, href: "/profile" },
+  { title: "Orders", icon: <IoTicketOutline size={30} />, href: "/" },
+  { title: "Log In", icon: <IoLogInOutline size={30} />, href: "/" },
+  { title: "Log Out", icon: <IoLogOutOutline size={30} />, href: "/" },
 ]
 const adminOptions = [
-  { title: "Products", icon: <IoShirtOutline size={30} /> },
-  { title: "Orders", icon: <IoTicketOutline size={30} /> },
-  { title: "Users", icon: <IoPeopleOutline size={30} /> },
+  { title: "Products", icon: <IoShirtOutline size={30} />, href: "/" },
+  { title: "Orders", icon: <IoTicketOutline size={30} />, href: "/" },
+  { title: "Users", icon: <IoPeopleOutline size={30} />, href: "/" },
 ]
 
 export const Sidebar = () => {
@@ -63,7 +63,12 @@ export const Sidebar = () => {
 
         <ul className='flex flex-col gap-4'>
           {userOptions.map((option) => (
-            <Link key={option.title} href='/' className='menu-options'>
+            <Link
+              key={option.title}
+              href={option.href}
+              onClick={() => closeMenu()}
+              className='menu-options'
+            >
               {option.icon}
               <span className='text-lg pl-3 font-semibold'>{option.title}</span>
             </Link>
@@ -74,7 +79,11 @@ export const Sidebar = () => {
 
         <ul className='flex flex-col gap-4'>
           {adminOptions.map((option) => (
-            <Link key={option.title} href='/' className='menu-options'>
+            <Link
+              key={option.title}
+              href={option.href}
+              className='menu-options'
+            >
               {option.icon}
               <span className='text-lg pl-3 font-semibold'>{option.title}</span>
             </Link>
