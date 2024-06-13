@@ -9,11 +9,10 @@ import { useRouter } from "next/navigation"
 
 export const LoginForm = () => {
   const [state, dispatch] = useFormState(authenticate, undefined)
-  const router = useRouter()
 
   useEffect(() => {
     if (state === "Success") {
-      router.replace("/")
+      window.location.replace("/")
     }
   }, [state])
 

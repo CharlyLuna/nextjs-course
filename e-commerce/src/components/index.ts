@@ -18,3 +18,6 @@ export * from "./ui/title/Title"
 export * from "./ui/footer/Footer"
 export * from "./ui/pagination/Pagination"
 export * from "./ui/error/ErrorPage"
+
+// Provider
+export * from "./provider/Provider"

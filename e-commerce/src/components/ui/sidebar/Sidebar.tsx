@@ -1,5 +1,6 @@
 "use client"
 import Link from "next/link"
+import { useSession } from "next-auth/react"
 import {
   IoCloseOutline,
   IoLogInOutline,
@@ -10,39 +11,15 @@ import {
   IoShirtOutline,
   IoTicketOutline,
 } from "react-icons/io5"
+import { logout } from "@/actions"
 import { useUIStore } from "@/store"
 import clsx from "clsx"
-import { logout } from "@/actions"
 
-const userOptions = [
-  {
-    title: "Profile",
-    icon: <IoPersonOutline size={30} />,
-    href: "/profile",
-    onClick: (callback: Function) => callback(),
-  },
-  {
-    title: "Orders",
-    icon: <IoTicketOutline size={30} />,
-    href: "/",
-    onClick: (callback: Function) => callback(),
-  },
-  {
-    title: "Log In",
-    icon: <IoLogInOutline size={30} />,
-    href: "/auth/login",
-    onClick: (callback: Function) => callback(),
-  },
-  {
-    title: "Log Out",
-    icon: <IoLogOutOutline size={30} />,
-    href: "/",
-    onClick: (callback: Function) => {
-      callback()
-      logout()
-    },
-  },
-]
+const logOut = async () => {
+  await logout()
+  window.location.replace("/")
+}
+
 const adminOptions = [
   {
     title: "Products",
@@ -67,6 +44,9 @@ const adminOptions = [
 export const Sidebar = () => {
   const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen)
   const closeMenu = useUIStore((state) => state.closeSideMenu)
+  const { data: session } = useSession()
+
+  const isAuthenticated = !!session?.user
 
   return (
     <div className=''>
@@ -101,17 +81,30 @@ export const Sidebar = () => {
         </div>
 
         <ul className='flex flex-col gap-4'>
-          {userOptions.map((option) => (
+          <Link href='/profile' onClick={closeMenu} className='menu-options'>
+            <IoPersonOutline size={30} />
+            <span className='text-lg pl-3 font-semibold'>Profile</span>
+          </Link>
+          <Link href='/orders' onClick={closeMenu} className='menu-options'>
+            <IoTicketOutline size={30} />
+            <span className='text-lg pl-3 font-semibold'>Orders</span>
+          </Link>
+
+          {isAuthenticated ? (
+            <button onClick={() => logOut()} className='menu-options'>
+              <IoLogOutOutline size={30} />
+              <span className='text-lg pl-3 font-semibold'>Log Out</span>
+            </button>
+          ) : (
             <Link
-              key={option.title}
-              href={option.href}
-              onClick={() => option.onClick(closeMenu)}
+              href='/auth/login'
+              onClick={closeMenu}
               className='menu-options'
             >
-              {option.icon}
-              <span className='text-lg pl-3 font-semibold'>{option.title}</span>
+              <IoLogInOutline size={30} />
+              <span className='text-lg pl-3 font-semibold'>Log In</span>
             </Link>
-          ))}
+          )}
         </ul>
 
         <div className='my-5 w-full h-px bg-gray-200'></div>
