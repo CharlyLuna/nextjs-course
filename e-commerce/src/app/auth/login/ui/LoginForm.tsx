@@ -3,14 +3,20 @@ import Link from "next/link"
 import { useFormState, useFormStatus } from "react-dom"
 import { authenticate } from "@/actions"
 import clsx from "clsx"
-import {
-  IoInformationCircleOutline,
-  IoInformationOutline,
-} from "react-icons/io5"
+import { IoInformationCircleOutline } from "react-icons/io5"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export const LoginForm = () => {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined)
-  console.log({ errorMessage })
+  const [state, dispatch] = useFormState(authenticate, undefined)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (state === "Success") {
+      router.replace("/")
+    }
+  }, [state])
+
   return (
     <form action={dispatch} className='flex flex-col'>
       <label htmlFor='email'>Email</label>
@@ -34,10 +40,10 @@ export const LoginForm = () => {
         aria-live='polite'
         aria-atomic='true'
       >
-        {errorMessage && (
+        {state !== "Success" && state !== undefined && (
           <>
             <IoInformationCircleOutline className='h-5 w-5 text-red-500' />
-            <p className='text-sm text-red-500'>{errorMessage}</p>
+            <p className='text-sm text-red-500'>{state}</p>
           </>
         )}
       </div>

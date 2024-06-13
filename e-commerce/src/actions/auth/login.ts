@@ -7,9 +7,16 @@ export async function authenticate(
   formData: FormData
 ) {
   try {
-    await signIn("credentials", formData)
+    await signIn("credentials", {
+      redirect: false,
+      ...Object.fromEntries(formData),
+    })
+    return "Success"
   } catch (error) {
-    return "Invalid credentials"
-    // throw error;
+    if ((error as any).type === "CallbackRouteError") {
+      return "Invalid credentials"
+    }
+
+    return "Unknown error"
   }
 }

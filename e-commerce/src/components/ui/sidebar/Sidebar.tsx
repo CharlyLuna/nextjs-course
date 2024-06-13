@@ -12,17 +12,56 @@ import {
 } from "react-icons/io5"
 import { useUIStore } from "@/store"
 import clsx from "clsx"
+import { logout } from "@/actions"
 
 const userOptions = [
-  { title: "Profile", icon: <IoPersonOutline size={30} />, href: "/profile" },
-  { title: "Orders", icon: <IoTicketOutline size={30} />, href: "/" },
-  { title: "Log In", icon: <IoLogInOutline size={30} />, href: "/" },
-  { title: "Log Out", icon: <IoLogOutOutline size={30} />, href: "/" },
+  {
+    title: "Profile",
+    icon: <IoPersonOutline size={30} />,
+    href: "/profile",
+    onClick: (callback: Function) => callback(),
+  },
+  {
+    title: "Orders",
+    icon: <IoTicketOutline size={30} />,
+    href: "/",
+    onClick: (callback: Function) => callback(),
+  },
+  {
+    title: "Log In",
+    icon: <IoLogInOutline size={30} />,
+    href: "/auth/login",
+    onClick: (callback: Function) => callback(),
+  },
+  {
+    title: "Log Out",
+    icon: <IoLogOutOutline size={30} />,
+    href: "/",
+    onClick: (callback: Function) => {
+      callback()
+      logout()
+    },
+  },
 ]
 const adminOptions = [
-  { title: "Products", icon: <IoShirtOutline size={30} />, href: "/" },
-  { title: "Orders", icon: <IoTicketOutline size={30} />, href: "/" },
-  { title: "Users", icon: <IoPeopleOutline size={30} />, href: "/" },
+  {
+    title: "Products",
+    icon: <IoShirtOutline size={30} />,
+    href: "/",
+    onClick: (callback: Function) => callback(),
+  },
+  {
+    title: "Orders",
+    icon: <IoTicketOutline size={30} />,
+    href: "/",
+    onClick: (callback: Function) => callback(),
+  },
+  {
+    title: "Users",
+    icon: <IoPeopleOutline size={30} />,
+    href: "/",
+    onClick: (callback: Function) => callback(),
+  },
 ]
 
 export const Sidebar = () => {
@@ -66,7 +105,7 @@ export const Sidebar = () => {
             <Link
               key={option.title}
               href={option.href}
-              onClick={() => closeMenu()}
+              onClick={() => option.onClick(closeMenu)}
               className='menu-options'
             >
               {option.icon}
