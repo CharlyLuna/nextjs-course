@@ -107,20 +107,25 @@ export const Sidebar = () => {
           )}
         </ul>
 
-        <div className='my-5 w-full h-px bg-gray-200'></div>
-
-        <ul className='flex flex-col gap-4'>
-          {adminOptions.map((option) => (
-            <Link
-              key={option.title}
-              href={option.href}
-              className='menu-options'
-            >
-              {option.icon}
-              <span className='text-lg pl-3 font-semibold'>{option.title}</span>
-            </Link>
-          ))}
-        </ul>
+        {session?.user.role === "admin" && (
+          <>
+            <div className='my-5 w-full h-px bg-gray-200'></div>
+            <ul className='flex flex-col gap-4'>
+              {adminOptions.map((option) => (
+                <Link
+                  key={option.title}
+                  href={option.href}
+                  className='menu-options'
+                >
+                  {option.icon}
+                  <span className='text-lg pl-3 font-semibold'>
+                    {option.title}
+                  </span>
+                </Link>
+              ))}
+            </ul>
+          </>
+        )}
       </nav>
     </div>
   )
