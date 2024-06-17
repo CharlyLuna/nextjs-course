@@ -5,7 +5,6 @@ import { authenticate } from "@/actions"
 import clsx from "clsx"
 import { IoInformationCircleOutline } from "react-icons/io5"
 import { useEffect } from "react"
-import { useRouter } from "next/navigation"
 
 export const LoginForm = () => {
   const [state, dispatch] = useFormState(authenticate, undefined)

@@ -81,20 +81,25 @@ export const Sidebar = () => {
         </div>
 
         <ul className='flex flex-col gap-4'>
-          <Link href='/profile' onClick={closeMenu} className='menu-options'>
-            <IoPersonOutline size={30} />
-            <span className='text-lg pl-3 font-semibold'>Profile</span>
-          </Link>
-          <Link href='/orders' onClick={closeMenu} className='menu-options'>
-            <IoTicketOutline size={30} />
-            <span className='text-lg pl-3 font-semibold'>Orders</span>
-          </Link>
-
           {isAuthenticated ? (
-            <button onClick={() => logOut()} className='menu-options'>
-              <IoLogOutOutline size={30} />
-              <span className='text-lg pl-3 font-semibold'>Log Out</span>
-            </button>
+            <>
+              <Link
+                href='/profile'
+                onClick={closeMenu}
+                className='menu-options'
+              >
+                <IoPersonOutline size={30} />
+                <span className='text-lg pl-3 font-semibold'>Profile</span>
+              </Link>
+              <Link href='/orders' onClick={closeMenu} className='menu-options'>
+                <IoTicketOutline size={30} />
+                <span className='text-lg pl-3 font-semibold'>Orders</span>
+              </Link>
+              <button onClick={() => logOut()} className='menu-options'>
+                <IoLogOutOutline size={30} />
+                <span className='text-lg pl-3 font-semibold'>Log Out</span>
+              </button>
+            </>
           ) : (
             <Link
               href='/auth/login'

@@ -20,3 +20,19 @@ export async function authenticate(
     return "Unknown error"
   }
 }
+
+export const login = async (email: string, password: string) => {
+  try {
+    await signIn("credentials", { email, password })
+    return {
+      ok: true,
+      message: "Logged in successfully.",
+    }
+  } catch (err) {
+    console.error(err)
+    return {
+      ok: false,
+      message: "An error occurred while logging in. Please try again later.",
+    }
+  }
+}
