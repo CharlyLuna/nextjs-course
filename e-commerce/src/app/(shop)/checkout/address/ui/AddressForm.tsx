@@ -2,6 +2,8 @@
 import clsx from "clsx"
 import { useForm } from "react-hook-form"
 import type { Country } from "@/interfaces"
+import { useAddressStore } from "@/store"
+import { useEffect } from "react"
 
 type FormInputs = {
   name: string
@@ -20,10 +22,13 @@ interface Props {
 }
 
 export const AddressForm = ({ countries }: Props) => {
+  const setAdress = useAddressStore((state) => state.setAddress)
+  const address = useAddressStore((state) => state.address)
   const {
     register,
     handleSubmit,
     formState: { isValid },
+    reset,
   } = useForm<FormInputs>({
     defaultValues: {
       name: "",
@@ -38,8 +43,15 @@ export const AddressForm = ({ countries }: Props) => {
     },
   })
 
+  useEffect(() => {
+    if (address.name) {
+      reset(address)
+    }
+  }, [address])
+
   const onSubmit = (data: FormInputs) => {
     console.log(data)
+    setAdress(data)
   }
 
   return (
