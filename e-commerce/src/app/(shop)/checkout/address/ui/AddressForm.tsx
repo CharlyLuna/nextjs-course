@@ -1,9 +1,12 @@
 "use client"
 import clsx from "clsx"
 import { useForm } from "react-hook-form"
-import type { Country } from "@/interfaces"
+import type { Address, Country } from "@/interfaces"
 import { useAddressStore } from "@/store"
 import { useEffect } from "react"
+import { deleteUserAddress, setUserAddress } from "@/actions"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 type FormInputs = {
   name: string
@@ -19,9 +22,12 @@ type FormInputs = {
 
 interface Props {
   countries: Country[]
+  userStoredAddress?: Partial<Address>
 }
 
-export const AddressForm = ({ countries }: Props) => {
+export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
+  const router = useRouter()
+  const { data: session } = useSession({ required: true })
   const setAdress = useAddressStore((state) => state.setAddress)
   const address = useAddressStore((state) => state.address)
   const {
@@ -31,15 +37,7 @@ export const AddressForm = ({ countries }: Props) => {
     reset,
   } = useForm<FormInputs>({
     defaultValues: {
-      name: "",
-      lastName: "",
-      address: "",
-      secondAddress: "",
-      cp: "",
-      city: "",
-      country: "",
-      phone: "",
-      rememberAddress: false,
+      ...userStoredAddress,
     },
   })
 
@@ -49,9 +47,25 @@ export const AddressForm = ({ countries }: Props) => {
     }
   }, [address])
 
-  const onSubmit = (data: FormInputs) => {
-    console.log(data)
+  const onSubmit = async (data: FormInputs) => {
     setAdress(data)
+    if (data.rememberAddress) {
+      // save address to db
+      const result = await setUserAddress(data, session!.user.id)
+      if (!result.ok) {
+        console.error(result.error)
+        return
+      }
+      router.push("/checkout")
+    } else {
+      // remove address from db
+      const result = await deleteUserAddress(session!.user.id)
+      if (!result.ok) {
+        console.error(result.error)
+        return
+      }
+      router.push("/checkout")
+    }
   }
 
   return (
