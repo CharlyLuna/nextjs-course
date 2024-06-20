@@ -1,8 +1,10 @@
 import { initialData } from "./seed"
+import { countries } from "./seed-countries"
 import prisma from "../lib/prisma"
 
 async function main() {
   // Erase the database before seeding
+  await prisma.country.deleteMany()
   await prisma.user.deleteMany()
   await prisma.productImage.deleteMany()
   await prisma.product.deleteMany()
@@ -12,6 +14,9 @@ async function main() {
 
   // Add user data
   await prisma.user.createMany({ data: users })
+
+  // Add countries data
+  await prisma.country.createMany({ data: countries })
 
   // Add category data
   const categoriesData = categories.map((category) => ({ name: category }))
