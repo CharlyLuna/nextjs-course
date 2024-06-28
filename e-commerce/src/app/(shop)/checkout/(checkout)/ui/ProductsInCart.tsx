@@ -40,7 +40,7 @@ export const ProductsInCart = () => {
               {product.size} - {product.title} ({product.quantity})
             </p>
             <p className='font-bold'>
-              ${currencyFormat(product.price * product.quantity)}
+              {currencyFormat(product.price * product.quantity)}
             </p>
           </div>
         </div>
