@@ -56,13 +56,93 @@ export const placeOrder = async (
   )
 
   // Create the transaction
-  const prismaTx = await prisma.$transaction(async (tx) => {
-    // UPDATE PRODUCTS STOCK
+  try {
+    const prismaTx = await prisma.$transaction(async (tx) => {
+      // UPDATE PRODUCTS STOCK
+      const updatedProductsPromises = products.map((product) => {
+        // Get the total quantity of product
+        const productQuantity = productIds
+          .filter((p) => p.productId === product.id)
+          .reduce((acc, current) => current.quantity + acc, 0)
+        if (productQuantity === 0) {
+          throw new Error(`${product.id} doesnt have a defined quantity`)
+        }
 
-    // CREATE ORDER --> ORDER AND ORDER ITEMS
+        return tx.product.update({
+          where: { id: product.id },
+          data: {
+            inStock: {
+              decrement: productQuantity,
+            },
+          },
+        })
+      })
 
-    // CREATE ORDER ADDRESS
+      const updatedProducts = await Promise.all(updatedProductsPromises)
+      // Check if any stock value is negative
+      updatedProducts.forEach((product) => {
+        if (product.inStock < 0) {
+          throw new Error(
+            `${product.title} doesnt have enough stock for the order to complete`
+          )
+        }
+      })
 
-    return {}
-  })
+      // CREATE ORDER --> ORDER AND ORDER ITEMS
+      const order = await tx.order.create({
+        data: {
+          userId,
+          itemsInOrder,
+          subtotal,
+          tax,
+          total,
+
+          OrderItem: {
+            createMany: {
+              data: productIds.map((p) => ({
+                productId: p.productId,
+                size: p.size,
+                quantity: p.quantity,
+                price:
+                  products.find((product) => product.id === p.productId)
+                    ?.price ?? 0,
+              })),
+            },
+          },
+        },
+      })
+
+      // CREATE ORDER ADDRESS
+      const orderAddress = await tx.orderAddress.create({
+        data: {
+          address: address.address,
+          city: address.city,
+          cp: address.cp,
+          name: address.name,
+          lastName: address.lastName,
+          phone: address.phone,
+          orderId: order.id,
+          secondAddress: address.secondAddress,
+          countryId: address.country,
+        },
+      })
+
+      return {
+        order,
+        orderAddress,
+        updatedProducts,
+      }
+    })
+
+    return {
+      ok: true,
+      order: prismaTx.order,
+      prismaTx,
+    }
+  } catch (error: any) {
+    return {
+      ok: false,
+      message: error?.message,
+    }
+  }
 }
