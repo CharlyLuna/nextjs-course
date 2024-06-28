@@ -3,13 +3,16 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import { useCartStore } from "@/store"
 import { currencyFormat } from "@/utils"
+import { useRouter } from "next/navigation"
 
 export const ProductsInCart = () => {
+  const router = useRouter()
   const productsInCart = useCartStore((state) => state.cart)
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     setLoaded(true)
+    if (productsInCart.length === 0) router.replace("/")
   }, [])
 
   if (!loaded) {

@@ -4,22 +4,27 @@ import { useAddressStore, useCartStore } from "@/store"
 import { currencyFormat } from "@/utils"
 import clsx from "clsx"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export const PlaceOrder = () => {
   const [loaded, setLoaded] = useState(false)
+  const [error, setError] = useState("")
   const [isPlacingOrder, setIsPlacingOrder] = useState(false)
+  const router = useRouter()
   const address = useAddressStore((state) => state.address)
   const { itemsInCart, subTotal, tax, total } = useCartStore((state) =>
     state.getSummaryInformation()
   )
   const cart = useCartStore((state) => state.cart)
+  const clearCart = useCartStore((state) => state.clearCart)
 
   useEffect(() => {
     setLoaded(true)
   }, [])
 
   const onPlaceOrder = async () => {
+    setError("")
     setIsPlacingOrder(true)
     const { rememberAddress, ...rest } = address
     const productsToOrder = cart.map((product) => ({
@@ -29,8 +34,14 @@ export const PlaceOrder = () => {
     }))
 
     const res = await placeOrder(productsToOrder, rest)
-    console.log(res)
-    setIsPlacingOrder(false)
+    if (!res.ok) {
+      setIsPlacingOrder(false)
+      setError(res.message)
+      return
+    }
+
+    clearCart()
+    router.replace("/orders/" + res.order?.id)
   }
 
   if (!loaded)
@@ -79,9 +90,7 @@ export const PlaceOrder = () => {
             terms of service
           </Link>
         </p>
-        {/* <p className='font-semibold text-red-500 mb-2'>
-          Error creating order...
-        </p> */}
+        <p className='font-semibold text-red-500 mb-2'>{error}</p>
         <button
           disabled={isPlacingOrder}
           onClick={onPlaceOrder}

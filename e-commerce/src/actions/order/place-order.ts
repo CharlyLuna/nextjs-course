@@ -23,6 +23,15 @@ export const placeOrder = async (
       message: "You need to be logged in to place an order.",
     }
   }
+
+  // Product quantity validation
+  if (productIds.length === 0) {
+    return {
+      ok: false,
+      message: "No products were detected on your order",
+    }
+  }
+
   // Get products information
   const products = await prisma.product.findMany({
     where: {
@@ -137,7 +146,7 @@ export const placeOrder = async (
     return {
       ok: true,
       order: prismaTx.order,
-      prismaTx,
+      // prismaTx,
     }
   } catch (error: any) {
     return {
