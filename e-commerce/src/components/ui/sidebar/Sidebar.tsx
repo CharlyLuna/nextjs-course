@@ -30,7 +30,7 @@ const adminOptions = [
   {
     title: "Orders",
     icon: <IoTicketOutline size={30} />,
-    href: "/",
+    href: "/orders",
     onClick: (callback: Function) => callback(),
   },
   {

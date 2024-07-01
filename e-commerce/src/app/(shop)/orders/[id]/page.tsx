@@ -4,6 +4,7 @@ import { initialData } from "@/seed/seed"
 import Image from "next/image"
 import { currencyFormat } from "../../../../utils/currencyFormat"
 import { redirect } from "next/navigation"
+import Link from "next/link"
 
 const productsInCart = [
   initialData.products[0],
@@ -30,7 +31,7 @@ export default async function OrderPage({ params }: Props) {
   return (
     <div className='flex justify-center items-center mb-28 px-4 md:px-0'>
       <div className='flex flex-col w-[1000px]'>
-        <Title title={`Order #${id}`} />
+        <Title title={`Order #${id.split("-").at(-1)}`} />
         {/* Cart */}
         <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
           <div className='flex flex-col mt-5'>
@@ -48,9 +49,12 @@ export default async function OrderPage({ params }: Props) {
                   className='rounded-md w-auto object-cover'
                 />
                 <div className='max-w-[50%]'>
-                  <p className='text-sm font-semibold'>
+                  <Link
+                    href={`/product/${product.slug}`}
+                    className='text-sm font-semibold hover:underline'
+                  >
                     {product.title} ({product.size})
-                  </p>
+                  </Link>
                   <p>
                     ${product.price} x {product.quantity}
                   </p>
