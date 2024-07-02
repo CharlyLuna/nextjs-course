@@ -20,4 +20,7 @@ export * from "./ui/pagination/Pagination"
 export * from "./ui/error/ErrorPage"
 
 // Provider
-export * from "./provider/Provider"
+export * from "./provider/Providers"
+
+// PAYPAL
+export * from "./paypal/PayPalButton"

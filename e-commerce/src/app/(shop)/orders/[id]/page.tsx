@@ -1,16 +1,9 @@
-import { getOrderById } from "@/actions"
-import { PaymentStatus, Title } from "@/components"
-import { initialData } from "@/seed/seed"
-import Image from "next/image"
-import { currencyFormat } from "../../../../utils/currencyFormat"
-import { redirect } from "next/navigation"
 import Link from "next/link"
-
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-]
+import Image from "next/image"
+import { redirect } from "next/navigation"
+import { PayPalButton, PaymentStatus, Title } from "@/components"
+import { getOrderById } from "@/actions"
+import { currencyFormat } from "@/utils"
 
 interface Props {
   params: {
@@ -97,7 +90,8 @@ export default async function OrderPage({ params }: Props) {
               </p>
             </div>
             <div className='mt-5 w-full'>
-              <PaymentStatus isPaid={order!.isPaid} />
+              {/* <PaymentStatus isPaid={order!.isPaid} /> */}
+              <PayPalButton />
             </div>
           </div>
         </div>
