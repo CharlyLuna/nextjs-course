@@ -1,10 +1,11 @@
 "use server"
 
 import { PayPalOrderStatus } from "@/interfaces"
+import prisma from "@/lib/prisma"
+import { revalidatePath } from "next/cache"
 
 export const paypalCheckPayment = async (transactionId: string) => {
   const authToken = await getPaypalBearerToken()
-  console.log(authToken)
   if (!authToken) {
     return {
       ok: false,
@@ -29,7 +30,32 @@ export const paypalCheckPayment = async (transactionId: string) => {
   }
 
   // Do the update of payment in db
-  console.log(status, purchase_units)
+  const { invoice_id: orderId } = purchase_units[0]
+
+  try {
+    const res = await prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        isPaid: true,
+        paidAt: new Date(),
+      },
+    })
+
+    // Revalidate path
+    revalidatePath(`/orders/${orderId}`)
+    return {
+      ok: true,
+      message: "Payment done!",
+    }
+  } catch (err: any) {
+    console.log(err.message)
+    return {
+      ok: false,
+      message: "Payment was unsuccessful",
+    }
+  }
 }
 
 const getPaypalBearerToken = async (): Promise<string | null> => {
@@ -54,6 +80,7 @@ const getPaypalBearerToken = async (): Promise<string | null> => {
       method: "POST",
       body: bodyContent,
       headers: headersList,
+      cache: "no-store",
     })
 
     const data = await response.json()
@@ -78,6 +105,7 @@ const verifyPaypalPayment = async (
     const response = await fetch(paypalOrderUrl, {
       method: "GET",
       headers: headersList,
+      cache: "no-store",
     })
 
     const data = await response.json()

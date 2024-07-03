@@ -82,6 +82,7 @@ export interface PurchaseUnit {
   reference_id: string
   amount: Amount
   payee: Payee
+  invoice_id: string
   soft_descriptor: string
   shipping: Shipping
   payments: Payments

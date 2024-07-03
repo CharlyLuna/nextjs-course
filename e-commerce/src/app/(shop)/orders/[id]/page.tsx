@@ -90,8 +90,11 @@ export default async function OrderPage({ params }: Props) {
               </p>
             </div>
             <div className='mt-5 w-full'>
-              {/* <PaymentStatus isPaid={order!.isPaid} /> */}
-              <PayPalButton amount={order!.total} orderId={order!.id} />
+              {order!.isPaid ? (
+                <PaymentStatus isPaid={order!.isPaid} />
+              ) : (
+                <PayPalButton amount={order!.total} orderId={order!.id} />
+              )}
             </div>
           </div>
         </div>

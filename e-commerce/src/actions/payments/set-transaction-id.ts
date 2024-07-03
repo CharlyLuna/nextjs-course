@@ -7,6 +7,29 @@ export const setTransactionId = async (
   transactionId: string
 ) => {
   try {
+    const order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+      select: {
+        transactionId: true,
+      },
+    })
+
+    if (!order) {
+      return {
+        ok: false,
+        message: `Order ${orderId} was not found`,
+      }
+    }
+
+    if (order.transactionId !== null) {
+      return {
+        ok: true,
+        message: "Order already have a transactionId",
+      }
+    }
+
     const updatedOrder = await prisma.order.update({
       where: {
         id: orderId,
@@ -15,13 +38,6 @@ export const setTransactionId = async (
         transactionId: transactionId,
       },
     })
-
-    if (!updatedOrder) {
-      return {
-        ok: false,
-        message: `Order ${orderId} was not found`,
-      }
-    }
 
     return {
       ok: true,
