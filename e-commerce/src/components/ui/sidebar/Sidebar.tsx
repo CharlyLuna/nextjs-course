@@ -25,19 +25,16 @@ const adminOptions = [
     title: "Products",
     icon: <IoShirtOutline size={30} />,
     href: "/",
-    onClick: (callback: Function) => callback(),
   },
   {
     title: "Orders",
     icon: <IoTicketOutline size={30} />,
-    href: "/orders",
-    onClick: (callback: Function) => callback(),
+    href: "/admin/orders",
   },
   {
     title: "Users",
     icon: <IoPeopleOutline size={30} />,
     href: "/",
-    onClick: (callback: Function) => callback(),
   },
 ]
 
@@ -121,6 +118,7 @@ export const Sidebar = () => {
                   key={option.title}
                   href={option.href}
                   className='menu-options'
+                  onClick={closeMenu}
                 >
                   {option.icon}
                   <span className='text-lg pl-3 font-semibold'>
