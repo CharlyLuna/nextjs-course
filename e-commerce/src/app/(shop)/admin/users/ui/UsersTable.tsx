@@ -2,12 +2,20 @@
 
 import { updateUserRole } from "@/actions"
 import type { User } from "@/interfaces"
+import { useSession } from "next-auth/react"
 
 interface Props {
   users: User[]
 }
 
 export const UsersTable = ({ users }: Props) => {
+  const { update } = useSession()
+
+  const onRoleChange = (user: User, role: string) => {
+    updateUserRole(user.id, role)
+    update({ user: user.email, data: { role } })
+  }
+
   return (
     <table className='min-w-full'>
       <thead className='bg-gray-200 border-b'>
@@ -46,7 +54,7 @@ export const UsersTable = ({ users }: Props) => {
             </td>
             <td className='flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
               <select
-                onChange={(e) => updateUserRole(user.id, e.target.value)}
+                onChange={(e) => onRoleChange(user, e.target.value)}
                 className='text-sm w-full p-2 text-gray-900'
                 value={user.role}
                 name='role'
