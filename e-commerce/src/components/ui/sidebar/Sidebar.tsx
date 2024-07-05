@@ -34,7 +34,7 @@ const adminOptions = [
   {
     title: "Users",
     icon: <IoPeopleOutline size={30} />,
-    href: "/",
+    href: "/admin/users",
   },
 ]
 
