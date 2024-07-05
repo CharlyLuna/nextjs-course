@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma"
 import bcryptjs from "bcryptjs"
 
 const authRoutes = ["/checkout/address", "/profile", "/checkout", "/orders"]
+const adminRoutes = ["/admin/order", "/admin/users", "/admin/products"]
 
 export const authConfig: NextAuthConfig = {
   pages: {
@@ -15,6 +16,18 @@ export const authConfig: NextAuthConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
       const isOnAuthRoute = authRoutes.includes(nextUrl.pathname)
+      const isOnAdminRoute = adminRoutes.includes(nextUrl.pathname)
+
+      if (isOnAdminRoute) {
+        if (!isLoggedIn) return false
+
+        if (auth.user.role !== "admin") {
+          return Response.redirect(new URL(`/`, nextUrl))
+        }
+
+        return true
+      }
+
       if (isOnAuthRoute) {
         if (isLoggedIn) return true
         return false // Redirect unauthenticated users to login page
@@ -28,6 +41,7 @@ export const authConfig: NextAuthConfig = {
 
         return true
       }
+
       return true
     },
     jwt({ token, user }) {
