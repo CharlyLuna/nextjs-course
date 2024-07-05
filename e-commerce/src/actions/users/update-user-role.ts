@@ -1,8 +1,9 @@
 "use server"
 import { auth } from "@/auth.config"
 import prisma from "@/lib/prisma"
+import { revalidatePath } from "next/cache"
 
-export const getPaginatedUsers = async () => {
+export const updateUserRole = async (userId: string, role: string) => {
   const session = await auth()
 
   if (session?.user.role !== "admin") {
@@ -13,15 +14,22 @@ export const getPaginatedUsers = async () => {
   }
 
   try {
-    const users = await prisma.user.findMany({
-      orderBy: {
-        name: "desc",
+    const newRole = role === "admin" ? "admin" : "user"
+
+    const user = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        role: newRole,
       },
     })
 
+    revalidatePath("/admin/users")
+
     return {
       ok: true,
-      users: users,
+      message: "User role updated!",
     }
   } catch (err) {
     return {
