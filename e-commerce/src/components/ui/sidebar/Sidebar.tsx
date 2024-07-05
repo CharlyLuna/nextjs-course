@@ -24,7 +24,7 @@ const adminOptions = [
   {
     title: "Products",
     icon: <IoShirtOutline size={30} />,
-    href: "/",
+    href: "/admin/products",
   },
   {
     title: "Orders",
