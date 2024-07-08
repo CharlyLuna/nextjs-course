@@ -5,10 +5,10 @@ import { Providers } from "@/components"
 
 export const metadata: Metadata = {
   title: {
-    template: "%s - Ecommerce | App",
-    default: "Home - Ecommerce | App",
+    template: "%s - E-SHOP | App",
+    default: "Home - E-SHOP | App",
   },
-  description: "E-commerce app",
+  description: "E-SHOP App",
 }
 
 export default function RootLayout({

@@ -12,7 +12,7 @@ export default async function ProfilePage() {
   const shortUsername = formatUsername(user?.name ?? "")
 
   return (
-    <div className='h-full flex flex-col px-2 md:px-5'>
+    <div className='h-full flex flex-col px-4 md:px-0'>
       <Title title='Profile' />
       <p className='text-lg font-semibold'>Welcome!</p>
       <p>Here is your profile information: </p>

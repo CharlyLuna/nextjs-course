@@ -19,7 +19,7 @@ export const TopMenu = () => {
       <div>
         <Link href='/'>
           <span className={`${titleFont.className} antialiased font-bold`}>
-            E-commerce
+            E-SHOP
           </span>
           <span> | App</span>
         </Link>

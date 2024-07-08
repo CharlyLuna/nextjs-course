@@ -1,12 +1,6 @@
 export const revalidate = 3600
 import { getProductBySlug } from "@/actions"
-import {
-  MobileSlideShow,
-  SizeSelector,
-  Slideshow,
-  StockLabel,
-} from "@/components"
-import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector"
+import { MobileSlideShow, Slideshow, StockLabel } from "@/components"
 import { titleFont } from "@/config/fonts"
 import { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
