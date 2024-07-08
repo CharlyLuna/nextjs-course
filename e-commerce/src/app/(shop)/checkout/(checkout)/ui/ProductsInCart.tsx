@@ -12,10 +12,9 @@ export const ProductsInCart = () => {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
+    if (productsInCart.length === 0) router.replace("/")
     setLoaded(true)
   }, [])
-
-  if (productsInCart.length === 0) router.replace("/")
 
   if (!loaded) {
     return (
