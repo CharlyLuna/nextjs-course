@@ -1,13 +1,19 @@
 "use client"
 
 import { createUpdateProduct } from "@/actions"
-import { Category, Product, ProductImage } from "@/interfaces"
+import { ProductImage } from "@/components"
+import {
+  Category,
+  Product,
+  ProductImage as ProductWithImage,
+} from "@/interfaces"
 import clsx from "clsx"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
 interface Props {
-  product: Partial<Product> & { ProductImage?: ProductImage[] }
+  product: Partial<Product> & { ProductImage?: ProductWithImage[] }
   categories: Category[]
 }
 
@@ -23,10 +29,11 @@ interface FormInputs {
   tags: string
   gender: "men" | "women" | "kid" | "unisex"
   categoryId: string
-  // Images
+  images?: FileList
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
+  const router = useRouter()
   const {
     handleSubmit,
     register,
@@ -39,7 +46,7 @@ export const ProductForm = ({ product, categories }: Props) => {
       ...product,
       tags: product.tags?.join(", "),
       sizes: product.sizes ?? [],
-      // images
+      images: undefined,
     },
   })
 
@@ -48,7 +55,7 @@ export const ProductForm = ({ product, categories }: Props) => {
   const onSubmit = async (data: FormInputs) => {
     const formData = new FormData()
 
-    const { ...productData } = data
+    const { images, ...productData } = data
 
     if (product.id) {
       formData.append("id", product.id ?? "")
@@ -63,8 +70,16 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append("categoryId", productData.categoryId)
     formData.append("gender", productData.gender)
 
-    const res = await createUpdateProduct(formData)
-    console.log(res)
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append("images", images[i])
+      }
+    }
+
+    const { ok, product: newProduct } = await createUpdateProduct(formData)
+    if (!ok) return
+
+    router.replace(`/admin/product/${newProduct?.slug}`)
   }
 
   const onSizeChange = (size: string) => {
@@ -205,18 +220,19 @@ export const ProductForm = ({ product, categories }: Props) => {
           <div className='flex flex-col mb-2'>
             <span>Photos</span>
             <input
+              {...register("images")}
               type='file'
               multiple
               className='p-2 border rounded-md bg-gray-200'
-              accept='image/png, image/jpeg'
+              accept='image/png, image/jpeg, image/avif'
             />
           </div>
           <div className='grid justify-items-center grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2'>
             {product.ProductImage?.map((image) => (
               <div key={image.id}>
-                <Image
+                <ProductImage
                   alt={product.title ?? ""}
-                  src={`/products/${image.url}`}
+                  src={image.url}
                   width={300}
                   height={300}
                   className='rounded shadow-sm'

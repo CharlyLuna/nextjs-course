@@ -1,7 +1,12 @@
 "use server"
 
-import { Gender, Size } from "@prisma/client"
+import prisma from "@/lib/prisma"
+import { revalidatePath } from "next/cache"
 import z from "zod"
+import { v2 as cloudinary } from "cloudinary"
+import { Gender, Size } from "@prisma/client"
+
+cloudinary.config(process.env.CLOUDINARY_URL ?? "")
 
 const productSchema = z.object({
   id: z.string().uuid().optional().nullable(),
@@ -39,51 +44,99 @@ export const createUpdateProduct = async (data: FormData) => {
 
   const { id, ...rest } = product
 
-  const prismaTx = await prisma?.$transaction(async (tx) => {
-    const tagsArray = rest.tags
-      .split(", ")
-      .map((tag) => tag.trim().toLowerCase())
+  try {
+    const prismaTx = await prisma.$transaction(async (tx) => {
+      const tagsArray = rest.tags
+        .split(", ")
+        .map((tag) => tag.trim().toLowerCase())
 
-    let product
+      let product
 
-    if (id) {
-      product = await tx.product.update({
-        where: {
-          id,
-        },
-        data: {
-          ...rest,
-          sizes: {
-            set: rest.sizes as Size[],
+      if (id) {
+        product = await tx.product.update({
+          where: {
+            id,
           },
-          tags: {
-            set: tagsArray,
+          data: {
+            ...rest,
+            sizes: {
+              set: rest.sizes as Size[],
+            },
+            tags: {
+              set: tagsArray,
+            },
           },
-        },
-      })
-    } else {
-      product = await tx.product.create({
-        data: {
-          ...rest,
-          sizes: {
-            set: rest.sizes as Size[],
+        })
+      } else {
+        product = await tx.product.create({
+          data: {
+            ...rest,
+            sizes: {
+              set: rest.sizes as Size[],
+            },
+            tags: {
+              set: tagsArray,
+            },
           },
-          tags: {
-            set: tagsArray,
-          },
-        },
-      })
-    }
+        })
+      }
 
-    console.log({ product })
+      // Load and save images
+      if (data.getAll("images")) {
+        const images = await uploadImages(data.getAll("images") as File[])
+        if (!images) {
+          throw new Error("Error uploading images")
+        }
+
+        await tx.productImage.createMany({
+          data: images.map((image) => ({
+            url: image!,
+            productId: product.id,
+          })),
+        })
+      }
+
+      return {
+        product,
+      }
+    })
+
+    revalidatePath("/admin/products")
+    revalidatePath(`/admin/product/${product.slug}`)
+    revalidatePath(`/product/${product.slug}`)
 
     return {
-      product,
+      ok: true,
+      product: prismaTx.product,
     }
-  })
+  } catch (err) {
+    return {
+      ok: false,
+      message: "Error creating/updating product",
+    }
+  }
+}
 
-  return {
-    ok: true,
-    message: "Product created successfully",
+const uploadImages = async (images: File[]) => {
+  try {
+    const uploadPromises = images.map(async (image) => {
+      try {
+        const buffer = await image.arrayBuffer()
+        const base64Image = Buffer.from(buffer).toString("base64")
+
+        return cloudinary.uploader
+          .upload(`data:image/png;base64,${base64Image}`)
+          .then((res) => res.secure_url)
+      } catch (err) {
+        console.log(err)
+        return null
+      }
+    })
+
+    const uploadedImages = await Promise.all(uploadPromises)
+    return uploadedImages
+  } catch (err) {
+    console.log(err)
+    return null
   }
 }
