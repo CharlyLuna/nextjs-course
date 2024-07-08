@@ -1,16 +1,16 @@
 "use client"
 
-import { createUpdateProduct } from "@/actions"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { ProductImage } from "@/components"
-import {
+import clsx from "clsx"
+import { useForm } from "react-hook-form"
+import { createUpdateProduct, deletProductImage } from "@/actions"
+import type {
   Category,
   Product,
   ProductImage as ProductWithImage,
 } from "@/interfaces"
-import clsx from "clsx"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
 
 interface Props {
   product: Partial<Product> & { ProductImage?: ProductWithImage[] }
@@ -33,6 +33,7 @@ interface FormInputs {
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const {
     handleSubmit,
@@ -40,6 +41,7 @@ export const ProductForm = ({ product, categories }: Props) => {
     getValues,
     setValue,
     watch,
+    reset,
     formState: { isValid },
   } = useForm<FormInputs>({
     defaultValues: {
@@ -74,12 +76,14 @@ export const ProductForm = ({ product, categories }: Props) => {
       for (let i = 0; i < images.length; i++) {
         formData.append("images", images[i])
       }
+      console.log("Images", images)
     }
 
-    const { ok, product: newProduct } = await createUpdateProduct(formData)
-    if (!ok) return
+    // const { ok, product: newProduct } = await createUpdateProduct(formData)
+    // if (!ok) return
 
-    router.replace(`/admin/product/${newProduct?.slug}`)
+    // reset()
+    // router.replace(`/admin/product/${newProduct?.slug}`)
   }
 
   const onSizeChange = (size: string) => {
@@ -96,6 +100,15 @@ export const ProductForm = ({ product, categories }: Props) => {
     } else {
       setValue("sizes", [...sizes, size])
     }
+  }
+
+  const handleDeleteImage = async (imageId: number, imageUrl: string) => {
+    setIsLoading(true)
+    const { ok } = await deletProductImage(imageId, imageUrl)
+    if (!ok) {
+      console.log("Error deleting image")
+    }
+    setIsLoading(false)
   }
 
   return (
@@ -181,7 +194,12 @@ export const ProductForm = ({ product, categories }: Props) => {
           </select>
         </div>
 
-        <button className='btn-primary w-full'>Guardar</button>
+        <button
+          disabled={isLoading}
+          className={clsx("w-full", isLoading ? "btn-disabled" : "btn-primary")}
+        >
+          Guardar
+        </button>
       </div>
 
       {/* Selector de tallas y fotos */}
@@ -238,9 +256,13 @@ export const ProductForm = ({ product, categories }: Props) => {
                   className='rounded shadow-sm'
                 />
                 <button
-                  onClick={() => console.log(image.url)}
+                  onClick={() => handleDeleteImage(image.id, image.url)}
+                  disabled={isLoading}
                   type='button'
-                  className='btn-danger mt-2'
+                  className={clsx(
+                    "mt-2",
+                    isLoading ? "btn-disabled w-full" : "btn-danger"
+                  )}
                 >
                   Delete
                 </button>
