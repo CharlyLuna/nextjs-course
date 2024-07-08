@@ -7,6 +7,7 @@ export * from "./product/slideshow/Slideshow"
 export * from "./product/slideshow/MobileSlideshow"
 export * from "./product/stock-label/StockLabel"
 export * from "./product/quantity-selector/QuantitySelector"
+export * from "./product/product-image/ProductImage"
 // Orders
 export * from "./orders/payment-status/PaymentStatus"
 

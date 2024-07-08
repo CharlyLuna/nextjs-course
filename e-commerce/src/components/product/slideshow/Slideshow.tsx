@@ -12,6 +12,8 @@ import "./slideshow.css"
 
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules"
 import Image from "next/image"
+import { ProductImage } from "../product-image/ProductImage"
+import { redirect } from "next/navigation"
 
 interface Props {
   images: string[]
@@ -21,6 +23,15 @@ interface Props {
 
 export const Slideshow = ({ images, title, className }: Props) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperObject>()
+
+  if (images.length === 0)
+    return (
+      <div
+        className={`${className} text-center h-[50vh] border border-gray-300`}
+      >
+        <h1 className='text-3xl text-gray-400'>No images available</h1>
+      </div>
+    )
 
   return (
     <div className={className}>
@@ -34,13 +45,12 @@ export const Slideshow = ({ images, title, className }: Props) => {
       >
         {images.map((image) => (
           <SwiperSlide key={image}>
-            <Image
-              src={`/products/${image}`}
+            <ProductImage
+              src={image}
               alt={title}
               height={800}
               width={1024}
               className='rounded-lg object-fill'
-              priority
             />
           </SwiperSlide>
         ))}
@@ -56,8 +66,8 @@ export const Slideshow = ({ images, title, className }: Props) => {
       >
         {images.map((image) => (
           <SwiperSlide key={image}>
-            <Image
-              src={`/products/${image}`}
+            <ProductImage
+              src={image}
               alt={title}
               height={300}
               width={300}

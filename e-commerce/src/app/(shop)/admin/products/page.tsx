@@ -1,7 +1,7 @@
 export const revalidate = 0
 
 import Link from "next/link"
-import { Pagination, Title } from "@/components"
+import { Pagination, ProductImage, Title } from "@/components"
 import { IoCardOutline } from "react-icons/io5"
 import { getProductPaginationWithImages } from "@/actions"
 import { redirect } from "next/navigation"
@@ -84,12 +84,12 @@ export default async function OrdersPage({ searchParams }: Props) {
               >
                 <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
                   <Link href={`/product/${product.slug}`}>
-                    <Image
-                      src={`/products/${product.images[0]}`}
+                    <ProductImage
+                      src={product.images[0]}
                       height={80}
                       width={80}
                       alt={product.title}
-                      className='rounded aspect-square'
+                      className='rounded aspect-square object-cover'
                     />
                   </Link>
                 </td>

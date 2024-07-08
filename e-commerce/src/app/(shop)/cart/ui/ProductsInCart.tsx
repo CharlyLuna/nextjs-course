@@ -1,5 +1,5 @@
 "use client"
-import { QuantitySelector } from "@/components"
+import { ProductImage, QuantitySelector } from "@/components"
 import { useCartStore } from "@/store"
 import Image from "next/image"
 import Link from "next/link"
@@ -35,8 +35,8 @@ export const ProductsInCart = () => {
           key={`${product.slug}-${product.size}`}
           className='flex gap-2 my-4'
         >
-          <Image
-            src={`/products/${product.image}`}
+          <ProductImage
+            src={product.image}
             alt={product.title}
             width={100}
             height={100}
