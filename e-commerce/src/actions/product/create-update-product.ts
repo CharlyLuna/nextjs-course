@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import z from "zod"
 import { v2 as cloudinary } from "cloudinary"
-import { Gender, Size } from "@prisma/client"
+import { Gender, Product, Size } from "@prisma/client"
 
 cloudinary.config(process.env.CLOUDINARY_URL ?? "")
 
@@ -50,7 +50,7 @@ export const createUpdateProduct = async (data: FormData) => {
         .split(", ")
         .map((tag) => tag.trim().toLowerCase())
 
-      let product
+      let product: Product
 
       if (id) {
         product = await tx.product.update({
