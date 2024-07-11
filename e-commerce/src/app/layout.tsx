@@ -9,6 +9,11 @@ export const metadata: Metadata = {
     default: "Home - E-SHOP | App",
   },
   description: "E-SHOP App",
+  openGraph: {
+    title: "E-SHOP | App",
+    description: "E-SHOP web application for shopping",
+    images: ["/imgs/starman_750x750.png"],
+  },
 }
 
 export default function RootLayout({
